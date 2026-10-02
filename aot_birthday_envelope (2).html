@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey Corps Birthday Dispatch - Attack on Titan</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&family=Montserrat:wght@400;600;700&family=Cinzel:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              aot: {
+                green: "#1b4332",
+                darkgreen: "#0b1d14",
+                scoutgreen: "#2d6a4f",
+                leather: "#3d2516",
+                gold: "#d4af37",
+                golddark: "#997a15",
+                parchment: "#f4e8c1",
+                parchmentdark: "#e2cc9b",
+                burgundy: "#8b0000",
+                slate: "#121915",
+              },
+            },
+            fontFamily: {
+              cinzel: ["Cinzel", "serif"],
+              cinzelDeco: ['"Cinzel Decorative"', "serif"],
+              medieval: ["MedievalSharp", "cursive"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        background-color: #070c09;
+        color: #f4e8c1;
+        overflow-x: hidden;
+        user-select: none;
+      }
+
+      .aot-bg {
+        background:
+          radial-gradient(
+            circle at center,
+            rgba(27, 67, 50, 0.55) 0%,
+            rgba(7, 12, 9, 0.98) 85%
+          ),
+          radial-gradient(
+            ellipse at top,
+            rgba(61, 37, 22, 0.45) 0%,
+            transparent 70%
+          );
+        background-attachment: fixed;
+      }
+
+      .parchment-texture {
+        background-color: #f4e8c1;
+        background-image:
+          radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+          radial-gradient(circle, rgba(160, 120, 60, 0.12) 2px, transparent 2px);
+        background-size:
+          20px 20px,
+          40px 40px;
+        box-shadow:
+          inset 0 0 70px rgba(61, 37, 22, 0.5),
+          0 15px 35px rgba(0, 0, 0, 0.8);
+        border: 2px solid #8c6a3f;
+      }
+
+      #particles-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .perspective-1000 {
+        perspective: 1200px;
+      }
+
+      .envelope-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 580px;
+        height: 380px;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+      }
+
+      .envelope-flap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0 0, 50% 55%, 100% 0);
+        background: linear-gradient(180deg, #2d6a4f 0%, #1b4332 100%);
+        border-top: 3px solid #d4af37;
+        transform-origin: top center;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 25;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+      }
+
+      .envelope-wrapper.open .envelope-flap {
+        transform: rotateX(180deg);
+        z-index: 5;
+      }
+
+      .envelope-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #0b1d14;
+        border: 3px solid #3d2516;
+        border-radius: 6px;
+        box-shadow:
+          0 20px 50px rgba(0, 0, 0, 0.9),
+          inset 0 0 25px rgba(0, 0, 0, 0.8);
+      }
+
+      .envelope-pockets {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 20;
+        pointer-events: none;
+      }
+
+      .pocket-left {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0 0, 50% 50%, 0 100%);
+        background: linear-gradient(90deg, #12291e 0%, #1b4332 100%);
+        border-left: 2px solid #2d6a4f;
+      }
+
+      .pocket-right {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+        background: linear-gradient(-90deg, #12291e 0%, #1b4332 100%);
+        border-right: 2px solid #2d6a4f;
+      }
+
+      .pocket-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+        background: linear-gradient(0deg, #0b1d14 0%, #1b4332 100%);
+        border-bottom: 3px solid #3d2516;
+      }
+
+      .wax-seal {
+        position: absolute;
+        top: 52%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 84px;
+        height: 84px;
+        background: radial-gradient(circle at 35% 35%, #a81313, #540303);
+        border-radius: 50%;
+        box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.8),
+          inset 0 0 8px rgba(0, 0, 0, 0.6),
+          0 0 0 3px rgba(212, 175, 55, 0.4);
+        z-index: 30;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wax-seal:hover {
+        transform: translate(-50%, -50%) scale(1.08);
+        box-shadow:
+          0 6px 22px rgba(212, 175, 55, 0.8),
+          inset 0 0 8px rgba(0, 0, 0, 0.6);
+      }
+
+      .wax-seal-pulse {
+        animation: sealGlow 2s infinite alternate;
+      }
+
+      @keyframes sealGlow {
+        0% {
+          box-shadow:
+            0 0 10px rgba(212, 175, 55, 0.3),
+            inset 0 0 8px rgba(0, 0, 0, 0.6);
+        }
+        100% {
+          box-shadow:
+            0 0 25px rgba(212, 175, 55, 0.9),
+            inset 0 0 8px rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      .letter-preview {
+        position: absolute;
+        top: 15px;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        background: #f4e8c1;
+        border-radius: 4px;
+        z-index: 10;
+        transition:
+          transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.4s,
+          z-index 0.1s 0.8s;
+        transform: translateY(0);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .envelope-wrapper.open .letter-preview {
+        transform: translateY(-240px);
+        z-index: 28;
+      }
+
+      .polaroid {
+        background: #ffffff;
+        padding: 12px 12px 28px 12px;
+        box-shadow:
+          0 10px 25px rgba(0, 0, 0, 0.5),
+          0 2px 5px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .polaroid:hover {
+        transform: translateY(-8px) scale(1.03) rotate(0deg) !important;
+        z-index: 40 !important;
+        box-shadow:
+          0 20px 35px rgba(0, 0, 0, 0.7),
+          0 0 15px rgba(212, 175, 55, 0.4);
+      }
+
+      .toast-popup {
+        transform: translateY(100px);
+        opacity: 0;
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+      .toast-popup.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body
+    class="aot-bg min-h-screen font-sans flex flex-col justify-between relative overflow-x-hidden"
+  >
+    <canvas id="particles-canvas"></canvas>
+
+    <header
+      class="w-full p-4 md:p-6 flex flex-wrap justify-between items-center z-50 relative border-b border-aot-gold/20 bg-aot-darkgreen/90 backdrop-blur-md gap-3"
+    >
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 bg-aot-leather rounded-full flex items-center justify-center border border-aot-gold shadow-md"
+        >
+          <svg
+            class="w-6 h-6 text-aot-gold"
+            viewBox="0 0 100 100"
+            fill="currentColor"
+          >
+            <path d="M50 10 L30 50 L50 40 L70 50 Z" fill="#ffffff" />
+            <path d="M50 10 L25 60 L50 45 L75 60 Z" fill="#1b4332" />
+            <path d="M50 90 L10 30 L50 50 L90 30 Z" opacity="0.8" />
+          </svg>
+        </div>
+        <div>
+          <h1
+            class="font-cinzelDeco text-xs md:text-base text-aot-gold tracking-widest uppercase font-bold"
+          >
+            Survey Corps Dispatch
+          </h1>
+          <p
+            id="header-status"
+            class="text-[10px] md:text-xs text-gray-300 font-serif tracking-wider"
+          >
+            Attack on Titan Birthday Studio
+          </p>
+        </div>
+      </div>
+
+      <!-- Music Control Bar -->
+      <div class="flex items-center space-x-2">
+        <button
+          id="audio-toggle"
+          class="px-3 py-1.5 md:px-4 md:py-2 bg-aot-leather/90 hover:bg-aot-leather border border-aot-gold/60 rounded-full text-xs text-aot-parchment flex items-center space-x-2 transition duration-300 shadow-lg cursor-pointer"
+        >
+          <i id="audio-icon" class="fas fa-music text-aot-gold"></i>
+          <span id="audio-label" class="font-cinzel">Red Swan: Off</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Local Audio Source -->
+    <audio id="sasageyo-audio" loop preload="auto">
+      <source
+        src="Attack_on_Titan_-_Red_Swan_Opening_4_(mp3.pm).mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <main
+      class="flex-grow flex flex-col items-center justify-center p-4 md:p-8 z-20 relative my-4"
+    >
+      <!-- Slide 1: Creator -->
+      <div
+        id="slide-1-creator"
+        class="w-full max-w-3xl bg-aot-darkgreen/95 border-2 border-aot-gold/40 p-6 md:p-10 rounded-lg shadow-2xl space-y-6"
+      >
+        <div class="text-center space-y-2 border-b border-aot-gold/20 pb-4">
+          <span
+            class="px-3 py-1 bg-aot-burgundy/80 text-aot-gold border border-aot-gold/40 text-[10px] md:text-xs font-cinzel tracking-widest rounded-sm uppercase"
+            >Creator Studio Mode</span
+          >
+          <h2
+            class="text-2xl md:text-3xl font-cinzelDeco font-bold text-aot-gold mt-1"
+          >
+            Design Birthday Dispatch
+          </h2>
+          <p class="text-xs md:text-sm text-gray-300 font-serif">
+            Fill in the details below to generate a shareable interactive
+            website link.
+          </p>
+        </div>
+
+        <form
+          id="creator-form"
+          onsubmit="event.preventDefault()"
+          class="space-y-6"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label
+                class="block text-xs font-cinzel text-aot-gold mb-1 uppercase font-bold"
+                >Sender Military Rank</label
+              >
+              <select
+                id="input-sender-rank"
+                class="w-full bg-aot-slate border border-aot-gold/40 rounded p-2.5 text-xs text-aot-parchment focus:border-aot-gold focus:outline-none"
+              >
+                <option value="Commander" selected>Commander</option>
+                <option value="Captain">Captain</option>
+                <option value="Section Commander">Section Commander</option>
+                <option value="Squad Leader">Squad Leader</option>
+                <option value="Scout Hero">Scout Hero</option>
+                <option value="Trainee">Trainee</option>
+              </select>
+            </div>
+
+            <div>
+              <label
+                class="block text-xs font-cinzel text-aot-gold mb-1 uppercase font-bold"
+                >Sender Name</label
+              >
+              <input
+                type="text"
+                id="input-sender-name"
+                value="Erwin Smith"
+                required
+                placeholder="e.g. Erwin Smith"
+                class="w-full bg-aot-slate border border-aot-gold/40 rounded p-2 text-xs text-aot-parchment focus:border-aot-gold focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label
+                class="block text-xs font-cinzel text-aot-gold mb-1 uppercase font-bold"
+                >Recipient Name</label
+              >
+              <input
+                type="text"
+                id="input-recipient-name"
+                value="Mohanad Jaeger"
+                required
+                placeholder="e.g. Mohanad Jaeger"
+                class="w-full bg-aot-slate border border-aot-gold/40 rounded p-2 text-xs text-aot-parchment focus:border-aot-gold focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              class="block text-xs font-cinzel text-aot-gold mb-1 uppercase font-bold"
+              >Birthday Dispatch Message</label
+            >
+            <textarea
+              id="input-message"
+              rows="5"
+              required
+              class="w-full bg-aot-slate border border-aot-gold/40 rounded p-3 text-xs text-aot-parchment font-serif leading-relaxed focus:border-aot-gold focus:outline-none"
+              placeholder="Write your birthday message here..."
+            >
+Today, we halt the horses, put down the Omni-Directional Mobility Gear, and raise our glasses high to celebrate your birthday!
+
+In a world surrounded by giants and uncertainty, your courage, kindness, and unwavering spirit stand taller than Wall Maria itself. You have fought through every obstacle, brought joy to our squad, and proven that your heart belongs among the elite.
+
+May your year ahead be filled with victories, grand adventures, limitlessness, and moments worth dedicating your heart to!</textarea
+            >
+          </div>
+
+          <div class="space-y-3 border-t border-aot-gold/20 pt-4">
+            <div class="flex justify-between items-center">
+              <label
+                class="text-xs font-cinzel text-aot-gold uppercase font-bold"
+                >Memory Photo Frames</label
+              >
+              <button
+                type="button"
+                id="btn-add-photo"
+                class="text-xs bg-aot-leather px-3 py-1.5 rounded border border-aot-gold/50 text-aot-parchment hover:bg-aot-gold hover:text-aot-darkgreen transition font-cinzel font-bold flex items-center gap-1"
+              >
+                <i class="fas fa-plus text-xs"></i> Add Photo Frame
+              </button>
+            </div>
+
+            <div id="photo-inputs-container" class="space-y-3"></div>
+          </div>
+
+          <div
+            class="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-aot-gold/20"
+          >
+            <button
+              type="button"
+              id="btn-generate-link"
+              class="w-full sm:w-auto px-6 py-3 bg-aot-burgundy hover:bg-red-900 border border-aot-gold/60 text-aot-parchment font-cinzel text-xs font-bold rounded shadow-lg transition flex items-center justify-center space-x-2"
+            >
+              <i class="fas fa-link"></i>
+              <span>Generate & Copy Share Link</span>
+            </button>
+
+            <button
+              type="button"
+              id="btn-preview"
+              class="w-full sm:w-auto px-6 py-3 bg-aot-leather hover:bg-aot-gold hover:text-aot-darkgreen border border-aot-gold/40 text-aot-parchment font-cinzel text-xs font-bold rounded transition flex items-center justify-center space-x-2"
+            >
+              <i class="fas fa-eye"></i>
+              <span>Preview Experience (Slide 2 & 3)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Slide 2: Envelope -->
+      <div
+        id="slide-2-envelope"
+        class="hidden w-full max-w-2xl flex flex-col items-center justify-center space-y-6"
+      >
+        <div class="text-center space-y-2">
+          <span
+            class="inline-block px-3 py-1 bg-aot-burgundy/80 text-aot-gold border border-aot-gold/40 text-[10px] md:text-xs font-cinzel tracking-widest rounded-sm uppercase"
+            >Confidential Military Dispatch</span
+          >
+          <h2
+            class="text-2xl md:text-4xl font-cinzelDeco font-black text-transparent bg-clip-text bg-gradient-to-r from-aot-gold via-yellow-100 to-aot-gold drop-shadow-md"
+          >
+            SHINZOU WO SASAGEYO!
+          </h2>
+          <p class="text-xs md:text-sm text-gray-300 font-serif italic">
+            "A sealed dispatch from Survey Corps Headquarters has arrived."
+          </p>
+        </div>
+
+        <div class="perspective-1000 my-6 w-full flex justify-center">
+          <div id="envelope" class="envelope-wrapper">
+            <div class="envelope-flap flex items-start justify-center pt-2">
+              <svg
+                class="w-12 h-12 text-aot-gold/40 opacity-70"
+                viewBox="0 0 100 100"
+              >
+                <path
+                  d="M50,15 L85,80 L15,80 Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="3"
+                />
+              </svg>
+            </div>
+
+            <div
+              class="letter-preview p-4 flex flex-col items-center justify-center text-center"
+            >
+              <div
+                class="border-2 border-dashed border-aot-leather/40 w-full h-full p-4 flex flex-col items-center justify-center"
+              >
+                <span
+                  class="font-cinzel text-xs text-aot-leather font-bold tracking-widest uppercase"
+                  >Survey Corps Gazette</span
+                >
+                <p
+                  class="font-medieval text-lg text-aot-leather font-bold mt-2"
+                >
+                  Happy Birthday Comrade!
+                </p>
+                <i class="fas fa-scroll text-aot-leather/50 text-2xl mt-2"></i>
+              </div>
+            </div>
+
+            <div class="envelope-pockets">
+              <div class="pocket-left"></div>
+              <div class="pocket-right"></div>
+              <div class="pocket-bottom"></div>
+            </div>
+
+            <div class="absolute bottom-6 left-6 z-20">
+              <div
+                class="bg-aot-darkgreen/90 px-3 py-2 rounded border border-aot-gold/50 shadow-md space-y-0.5"
+              >
+                <p
+                  id="envelope-sender-display"
+                  class="text-xs font-cinzel text-aot-gold font-bold uppercase tracking-wider"
+                >
+                  From: Commander Erwin Smith
+                </p>
+                <p
+                  id="envelope-recipient-display"
+                  class="text-xs font-cinzel text-aot-parchment font-bold uppercase tracking-wider"
+                >
+                  To: Mohanad Jaeger
+                </p>
+              </div>
+              <p class="text-[9px] font-sans text-gray-300 mt-1 pl-1">
+                Wall Rose • Trost District Command
+              </p>
+            </div>
+
+            <div
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none opacity-20"
+            >
+              <svg
+                class="w-32 h-32 text-aot-gold"
+                viewBox="0 0 100 100"
+                fill="currentColor"
+              >
+                <path
+                  d="M20 20 C35 15, 45 35, 48 55 C40 50, 30 45, 20 20 Z"
+                  fill="#ffffff"
+                />
+                <path
+                  d="M15 35 C30 30, 42 45, 46 65 C38 60, 25 55, 15 35 Z"
+                  fill="#ffffff"
+                />
+                <path
+                  d="M80 20 C65 15, 55 35, 52 55 C60 50, 70 45, 80 20 Z"
+                  fill="#1b4332"
+                />
+                <path
+                  d="M85 35 C70 30, 58 45, 54 65 C62 60, 75 55, 85 35 Z"
+                  fill="#1b4332"
+                />
+              </svg>
+            </div>
+
+            <!-- Wax Seal -->
+            <div
+              id="wax-seal"
+              class="wax-seal wax-seal-pulse"
+              title="Click to break seal and view letter"
+            >
+              <svg class="w-10 h-10 text-aot-gold" viewBox="0 0 100 100">
+                <g fill="currentColor">
+                  <path
+                    d="M22 25 Q 40 20, 48 50 Q 35 45, 22 25 Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M18 40 Q 38 35, 46 65 Q 32 60, 18 40 Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M15 55 Q 35 50, 44 80 Q 28 75, 15 55 Z"
+                    fill="#ffffff"
+                  />
+                  <path
+                    d="M78 25 Q 60 20, 52 50 Q 65 45, 78 25 Z"
+                    fill="#0b1d14"
+                  />
+                  <path
+                    d="M82 40 Q 62 35, 54 65 Q 68 60, 82 40 Z"
+                    fill="#0b1d14"
+                  />
+                  <path
+                    d="M85 55 Q 65 50, 56 80 Q 72 75, 85 55 Z"
+                    fill="#0b1d14"
+                  />
+                  <path
+                    d="M50 15 L80 25 L80 60 C80 75, 50 90, 50 90 C50 90, 20 75, 20 60 L20 25 Z"
+                    fill="none"
+                    stroke="#d4af37"
+                    stroke-width="4"
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="flex items-center space-x-2 text-aot-gold/90 text-sm font-cinzel animate-bounce"
+        >
+          <i class="fas fa-hand-pointer"></i>
+          <span>Tap Wax Seal to Break Seal & Play Red Swan</span>
+        </div>
+      </div>
+
+      <!-- Slide 3: Letter -->
+      <div
+        id="slide-3-letter"
+        class="hidden w-full max-w-4xl flex flex-col items-center"
+      >
+        <div
+          id="letter-content"
+          class="w-full parchment-texture p-6 md:p-12 rounded-lg relative text-aot-leather shadow-2xl my-2"
+        >
+          <div
+            class="flex flex-col md:flex-row justify-between items-center border-b-2 border-aot-leather/30 pb-6 mb-8 gap-4"
+          >
+            <div class="flex items-center space-x-4">
+              <div
+                class="w-16 h-20 border-2 border-aot-leather bg-aot-darkgreen/10 p-1 flex items-center justify-center rounded"
+              >
+                <svg class="w-12 h-16 text-aot-leather" viewBox="0 0 100 120">
+                  <path
+                    d="M50 5 L90 20 L90 80 Q50 115 50 115 Q50 115 10 80 L10 20 Z"
+                    fill="none"
+                    stroke="#3d2516"
+                    stroke-width="4"
+                  />
+                  <path
+                    d="M20 30 C 45 25, 48 60, 48 70 C 35 60, 25 50, 20 30 Z"
+                    fill="#ffffff"
+                    stroke="#3d2516"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M80 30 C 55 25, 52 60, 52 70 C 65 60, 75 50, 80 30 Z"
+                    fill="#1b4332"
+                    stroke="#3d2516"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h3
+                  class="font-cinzelDeco text-lg md:text-2xl font-bold tracking-wider text-aot-leather"
+                >
+                  OFFICIAL BIRTHDAY DISPATCH
+                </h3>
+                <p
+                  id="letter-sender-rank-header"
+                  class="font-sans text-xs tracking-widest text-aot-leather/80 uppercase font-semibold"
+                >
+                  Survey Corps Order • Priority Alpha
+                </p>
+              </div>
+            </div>
+            <div
+              class="text-right font-serif text-xs md:text-sm text-aot-leather/80 border-l-2 md:border-l-0 border-aot-leather/20 pl-4 md:pl-0"
+            >
+              <p><strong>Location:</strong> Trost District Headquarters</p>
+              <p><strong>Status:</strong> Active Celebration</p>
+            </div>
+          </div>
+
+          <div
+            class="space-y-6 font-medieval text-base md:text-xl leading-relaxed text-aot-leather/95"
+          >
+            <div
+              class="text-xl md:text-2xl font-bold text-aot-burgundy flex items-center gap-2"
+            >
+              <span>To Our Dearest Comrade,</span>
+              <span
+                id="display-recipient-name"
+                class="underline decoration-aot-gold decoration-2 text-aot-burgundy"
+                >Mohanad Jaeger</span
+              >
+            </div>
+
+            <div
+              id="display-letter-message"
+              class="whitespace-pre-line space-y-4 font-serif text-sm md:text-base leading-relaxed"
+            ></div>
+
+            <div
+              class="p-4 bg-aot-leather/10 border-l-4 border-aot-burgundy my-6 rounded-r italic font-serif text-sm md:text-base text-aot-leather"
+            >
+              "Like a fallen angel into the starry night, embrace your freedom
+              and let nothing stop your march forward!"
+              <span
+                id="display-sender-signoff"
+                class="block mt-2 font-bold text-right text-xs uppercase tracking-widest font-sans text-aot-leather/80"
+                >— Commander Erwin Smith</span
+              >
+            </div>
+          </div>
+
+          <div class="mt-12 pt-8 border-t-2 border-aot-leather/30">
+            <div class="text-center mb-6">
+              <h4
+                class="font-cinzel text-lg md:text-xl font-bold text-aot-leather uppercase tracking-widest"
+              >
+                <i class="fas fa-camera-retro mr-2"></i>Scout Regiment Memories
+              </h4>
+            </div>
+
+            <div
+              id="display-photos-grid"
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-6"
+            ></div>
+          </div>
+
+          <div
+            class="mt-10 flex flex-col sm:flex-row justify-between items-center border-t border-aot-leather/20 pt-6 gap-4"
+          >
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-12 h-12 rounded-full border-2 border-aot-burgundy flex items-center justify-center text-aot-burgundy font-bold text-xs uppercase text-center transform -rotate-12"
+              >
+                SEAL OF<br />FREEDOM
+              </div>
+              <div>
+                <p class="font-cinzel text-xs font-bold text-aot-leather">
+                  COMMANDER'S APPROVAL
+                </p>
+                <p class="font-sans text-[11px] text-aot-leather/70">
+                  Shingeki No Kyojin Headquarters
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <button
+                id="btn-confetti"
+                class="px-4 py-2 bg-aot-burgundy hover:bg-red-900 text-aot-parchment font-cinzel text-xs rounded shadow-lg transition flex items-center space-x-2"
+              >
+                <i class="fas fa-flag"></i>
+                <span>Shout "Shinzo Wo Sasageyo!"</span>
+              </button>
+              <button
+                id="btn-replay"
+                title="Replay Envelope Opening"
+                class="px-3 py-2 bg-aot-leather text-aot-parchment font-cinzel text-xs rounded hover:bg-opacity-90 transition"
+              >
+                <i class="fas fa-redo mr-1"></i> Replay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div
+      id="photo-lightbox"
+      class="fixed inset-0 bg-black/90 z-50 hidden flex flex-col items-center justify-center p-4"
+    >
+      <button
+        id="btn-close-lightbox"
+        class="absolute top-6 right-6 text-aot-gold text-2xl hover:text-white transition"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+      <img
+        id="lightbox-img"
+        src=""
+        class="max-w-full max-h-[80vh] rounded border-2 border-aot-gold shadow-2xl"
+      />
+      <p
+        id="lightbox-caption"
+        class="text-aot-parchment font-medieval text-lg mt-4 font-bold text-center"
+      ></p>
+    </div>
+
+    <button
+      id="btn-back-to-creator"
+      class="hidden fixed bottom-6 left-6 z-50 bg-aot-gold text-aot-darkgreen hover:bg-yellow-400 font-cinzel text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl flex items-center space-x-2 border-2 border-aot-darkgreen transition transform hover:scale-105"
+    >
+      <i class="fas fa-edit"></i>
+      <span>Back to Creator Studio</span>
+    </button>
+
+    <div
+      id="toast"
+      class="fixed bottom-6 right-6 z-50 bg-aot-gold text-aot-darkgreen font-cinzel text-xs font-bold px-4 py-3 rounded-lg shadow-2xl flex items-center space-x-2 toast-popup"
+    >
+      <i class="fas fa-check-circle text-base"></i>
+      <span id="toast-message">Link copied to clipboard!</span>
+    </div>
+
+    <script>
+      let cardData = {
+        rank: "Commander",
+        sender: "Erwin Smith",
+        recipient: "Mohanad Jaeger",
+        message: `Today, we halt the horses, put down the Omni-Directional Mobility Gear, and raise our glasses high to celebrate your birthday!\n\nIn a world surrounded by giants and uncertainty, your courage, kindness, and unwavering spirit stand taller than Wall Maria itself. You have fought through every obstacle, brought joy to our squad, and proven that your heart belongs among the elite.\n\nMay your year ahead be filled with victories, grand adventures, limitlessness, and moments worth dedicating your heart to!`,
+        photos: [
+          {
+            url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+            caption: "Training Corps Days 🌲",
+          },
+          {
+            url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+            caption: "Beyond the Walls 🏔",
+          },
+        ],
+      };
+
+      const audioEl = document.getElementById("sasageyo-audio");
+      const audioIcon = document.getElementById("audio-icon");
+      const audioLabel = document.getElementById("audio-label");
+
+      let isAudioPlaying = false;
+
+      // Direct playback logic for local audio
+      function playLocalAudio() {
+        audioEl.volume = 1.0;
+        const playPromise = audioEl.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              isAudioPlaying = true;
+              audioIcon.className =
+                "fas fa-compact-disc text-aot-gold animate-spin";
+              audioLabel.textContent = "Red Swan: On";
+            })
+            .catch((err) => {
+              console.error("Audio playback error:", err);
+              showToast(
+                "Make sure the MP3 is in the same folder as this HTML file.",
+              );
+            });
+        }
+      }
+
+      function stopLocalAudio() {
+        audioEl.pause();
+        isAudioPlaying = false;
+        audioIcon.className = "fas fa-music text-aot-gold";
+        audioLabel.textContent = "Red Swan: Off";
+      }
+
+      function toggleAudio() {
+        if (audioEl.paused) {
+          playLocalAudio();
+        } else {
+          stopLocalAudio();
+        }
+      }
+
+      audioEl.addEventListener("error", (e) => {
+        console.warn("Audio file could not be read:", e);
+        showToast(
+          "Cannot find: Attack_on_Titan_-_Red_Swan_Opening_4_(mp3.pm).mp3",
+        );
+      });
+
+      function renderPhotoInputs() {
+        const container = document.getElementById("photo-inputs-container");
+        container.innerHTML = "";
+
+        cardData.photos.forEach((photo, index) => {
+          const div = document.createElement("div");
+          div.className =
+            "photo-row p-3 bg-aot-slate/80 border border-aot-gold/30 rounded space-y-2 relative";
+          div.setAttribute("data-index", index);
+
+          div.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="text-[11px] font-cinzel text-aot-gold font-bold">Photo Frame #${index + 1}</span>
+            <button type="button" class="btn-remove-photo text-red-400 hover:text-red-200 text-xs px-2 py-0.5" title="Remove photo frame">
+              <i class="fas fa-trash-alt mr-1"></i>Remove
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <input type="url" value="${photo.url.startsWith("data:") ? "" : photo.url}" placeholder="Image Web URL (http://...)" class="photo-url-input bg-aot-darkgreen border border-aot-gold/30 rounded p-2 text-xs text-aot-parchment focus:outline-none">
+            <input type="text" value="${photo.caption}" placeholder="Caption" class="photo-cap-input bg-aot-darkgreen border border-aot-gold/30 rounded p-2 text-xs text-aot-parchment focus:outline-none">
+          </div>
+          <div class="flex items-center space-x-2 pt-1">
+            <span class="text-[10px] text-gray-400">Or upload local image:</span>
+            <input type="file" accept="image/*" class="photo-file-input text-[10px] text-aot-gold file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:bg-aot-leather file:text-aot-parchment hover:file:bg-aot-gold hover:file:text-aot-darkgreen">
+          </div>
+        `;
+
+          const fileInput = div.querySelector(".photo-file-input");
+          fileInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (evt) {
+                photo.url = evt.target.result;
+                showToast(`Local image uploaded for Frame #${index + 1}`);
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+
+          const removeBtn = div.querySelector(".btn-remove-photo");
+          removeBtn.addEventListener("click", () => {
+            if (cardData.photos.length <= 1) {
+              showToast("At least one photo frame is recommended!");
+              return;
+            }
+            cardData.photos.splice(index, 1);
+            renderPhotoInputs();
+          });
+
+          container.appendChild(div);
+        });
+      }
+
+      function addPhotoField() {
+        cardData.photos.push({
+          url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+          caption: `Scout Memory #${cardData.photos.length + 1}`,
+        });
+        renderPhotoInputs();
+      }
+
+      function gatherFormData() {
+        const rank = document.getElementById("input-sender-rank").value;
+        const sender =
+          document.getElementById("input-sender-name").value.trim() ||
+          "Erwin Smith";
+        const recipient =
+          document.getElementById("input-recipient-name").value.trim() ||
+          "Mohanad Jaeger";
+        const message = document.getElementById("input-message").value.trim();
+
+        const photoRows = document.querySelectorAll(".photo-row");
+        const updatedPhotos = [];
+
+        photoRows.forEach((row, idx) => {
+          const urlInput = row.querySelector(".photo-url-input").value.trim();
+          const capInput = row.querySelector(".photo-cap-input").value.trim();
+
+          let existingUrl = cardData.photos[idx]
+            ? cardData.photos[idx].url
+            : "";
+          let finalUrl =
+            urlInput ||
+            existingUrl ||
+            "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80";
+
+          updatedPhotos.push({
+            url: finalUrl,
+            caption: capInput || `Scout Memory #${idx + 1}`,
+          });
+        });
+
+        cardData = { rank, sender, recipient, message, photos: updatedPhotos };
+        return cardData;
+      }
+
+      function generateShareLink() {
+        const data = gatherFormData();
+        const jsonStr = JSON.stringify(data);
+        const encoded = encodeURIComponent(jsonStr);
+        const baseUrl = window.location.origin + window.location.pathname;
+        return `${baseUrl}#data=${encoded}`;
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toast-message").innerText = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3500);
+      }
+
+      function copyShareLink() {
+        const shareUrl = generateShareLink();
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard
+            .writeText(shareUrl)
+            .then(() =>
+              showToast(`Link copied! Send it to ${cardData.recipient}`),
+            )
+            .catch(() => fallbackCopy(shareUrl));
+        } else {
+          fallbackCopy(shareUrl);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        showToast(`Link copied! Send it to ${cardData.recipient}`);
+      }
+
+      function renderCardDataToDOM() {
+        document.getElementById("envelope-sender-display").innerText =
+          `From: ${cardData.rank} ${cardData.sender}`;
+        document.getElementById("envelope-recipient-display").innerText =
+          `To: ${cardData.recipient}`;
+
+        document.getElementById("display-recipient-name").innerText =
+          cardData.recipient;
+        document.getElementById("display-letter-message").innerText =
+          cardData.message;
+        document.getElementById("display-sender-signoff").innerText =
+          `— ${cardData.rank} ${cardData.sender}`;
+        document.getElementById("letter-sender-rank-header").innerText =
+          `Survey Corps Order • Signed by ${cardData.rank} ${cardData.sender}`;
+
+        const photosGrid = document.getElementById("display-photos-grid");
+        photosGrid.innerHTML = "";
+
+        cardData.photos.forEach((photo, idx) => {
+          const rot = idx % 2 === 0 ? "-rotate-2" : "rotate-2";
+          const card = document.createElement("div");
+          card.className = `polaroid transform ${rot} hover:rotate-0 cursor-pointer`;
+          card.innerHTML = `
+          <div class="h-48 bg-gray-200 overflow-hidden rounded-sm relative">
+            <img src="${photo.url}" alt="Memory" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400/1b4332/f4e8c1?text=AOT+Memory'">
+            <div class="absolute top-2 right-2 bg-aot-darkgreen/80 text-aot-gold text-[10px] font-cinzel px-2 py-0.5 rounded">Log #${idx + 1}</div>
+          </div>
+          <p class="font-medieval text-center text-aot-leather text-sm mt-3 font-bold">${photo.caption}</p>
+        `;
+
+          card.addEventListener("click", () =>
+            openLightbox(photo.url, photo.caption),
+          );
+          photosGrid.appendChild(card);
+        });
+      }
+
+      function openLightbox(url, caption) {
+        document.getElementById("lightbox-img").src = url;
+        document.getElementById("lightbox-caption").innerText = caption;
+        document.getElementById("photo-lightbox").classList.remove("hidden");
+      }
+
+      function closeLightbox() {
+        document.getElementById("photo-lightbox").classList.add("hidden");
+      }
+
+      function switchToEnvelopeSlide(isCreatorPreview = false) {
+        gatherFormData();
+        renderCardDataToDOM();
+
+        document.getElementById("slide-1-creator").classList.add("hidden");
+        document.getElementById("slide-2-envelope").classList.remove("hidden");
+        document.getElementById("slide-3-letter").classList.add("hidden");
+
+        if (isCreatorPreview) {
+          document
+            .getElementById("btn-back-to-creator")
+            .classList.remove("hidden");
+          document.getElementById("header-status").innerText =
+            `Preview Mode • Recipient: ${cardData.recipient}`;
+        } else {
+          document
+            .getElementById("btn-back-to-creator")
+            .classList.add("hidden");
+          document.getElementById("header-status").innerText =
+            `Recipient View • To: ${cardData.recipient}`;
+        }
+      }
+
+      function switchToCreatorSlide() {
+        document.getElementById("slide-1-creator").classList.remove("hidden");
+        document.getElementById("slide-2-envelope").classList.add("hidden");
+        document.getElementById("slide-3-letter").classList.add("hidden");
+        document.getElementById("btn-back-to-creator").classList.add("hidden");
+        document.getElementById("header-status").innerText =
+          "Attack on Titan Birthday Studio";
+      }
+
+      function openEnvelope() {
+        playLocalAudio();
+
+        const waxSeal = document.getElementById("wax-seal");
+        const envelope = document.getElementById("envelope");
+
+        waxSeal.style.transform = "translate(-50%, -50%) scale(1.4)";
+        waxSeal.style.opacity = "0";
+
+        setTimeout(() => envelope.classList.add("open"), 300);
+
+        setTimeout(() => {
+          document.getElementById("slide-2-envelope").classList.add("hidden");
+          document.getElementById("slide-3-letter").classList.remove("hidden");
+        }, 1300);
+      }
+
+      function replayExperience() {
+        const waxSeal = document.getElementById("wax-seal");
+        const envelope = document.getElementById("envelope");
+
+        document.getElementById("slide-3-letter").classList.add("hidden");
+        document.getElementById("slide-2-envelope").classList.remove("hidden");
+
+        envelope.classList.remove("open");
+        waxSeal.style.opacity = "1";
+        waxSeal.style.transform = "translate(-50%, -50%) scale(1)";
+      }
+
+      // Particle Canvas Animation
+      const canvas = document.getElementById("particles-canvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = -20;
+          this.size = Math.random() * 8 + 4;
+          this.speedY = Math.random() * 1.5 + 0.8;
+          this.speedX = Math.random() * 1 - 0.5;
+          this.rotation = Math.random() * 360;
+          this.rotSpeed = Math.random() * 2 - 1;
+          this.color = Math.random() > 0.5 ? "#1b4332" : "#2d6a4f";
+          this.opacity = Math.random() * 0.6 + 0.3;
+        }
+        update() {
+          this.y += this.speedY;
+          this.x += Math.sin(this.y * 0.01) + this.speedX;
+          this.rotation += this.rotSpeed;
+          if (this.y > canvas.height + 20) this.reset();
+        }
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate((this.rotation * Math.PI) / 180);
+          ctx.globalAlpha = this.opacity;
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+      for (let i = 0; i < 35; i++) particles.push(new Particle());
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      function triggerConfetti() {
+        for (let i = 0; i < 20; i++) {
+          const flag = document.createElement("div");
+          flag.innerHTML = `<i class="fas fa-shield-alt text-aot-gold text-xl"></i>`;
+          flag.style.position = "fixed";
+          flag.style.left = Math.random() * 100 + "vw";
+          flag.style.top = "100vh";
+          flag.style.zIndex = "100";
+          flag.style.transition = `transform ${Math.random() * 2 + 1.5}s ease-out, opacity 2s`;
+          document.body.appendChild(flag);
+
+          setTimeout(() => {
+            flag.style.transform = `translateY(-110vh) rotate(${Math.random() * 360}deg)`;
+            flag.style.opacity = "0";
+          }, 50);
+
+          setTimeout(() => flag.remove(), 3000);
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        renderPhotoInputs();
+
+        document
+          .getElementById("btn-add-photo")
+          .addEventListener("click", addPhotoField);
+        document
+          .getElementById("btn-generate-link")
+          .addEventListener("click", copyShareLink);
+        document
+          .getElementById("btn-preview")
+          .addEventListener("click", () => switchToEnvelopeSlide(true));
+        document
+          .getElementById("btn-back-to-creator")
+          .addEventListener("click", switchToCreatorSlide);
+        document
+          .getElementById("wax-seal")
+          .addEventListener("click", openEnvelope);
+        document
+          .getElementById("btn-replay")
+          .addEventListener("click", replayExperience);
+        document
+          .getElementById("btn-confetti")
+          .addEventListener("click", triggerConfetti);
+        document
+          .getElementById("btn-close-lightbox")
+          .addEventListener("click", closeLightbox);
+        document
+          .getElementById("audio-toggle")
+          .addEventListener("click", toggleAudio);
+
+        const hash = window.location.hash;
+        if (hash && hash.includes("data=")) {
+          try {
+            const rawData = hash.split("data=")[1];
+            const decodedJson = decodeURIComponent(rawData);
+            cardData = JSON.parse(decodedJson);
+            switchToEnvelopeSlide(false);
+          } catch (e) {
+            console.error("Failed to parse card data from URL Hash", e);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
